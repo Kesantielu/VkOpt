@@ -2447,7 +2447,7 @@ vkopt['audio'] =  {
                   idx = hq.length - 1;
                }
                var start = Math.max(0, idx - 2);
-               var end = Math.min(start + 5, hq.length - 1) - start;
+               var end = Math.min(start + 5, hq.length) - start;
                var to_load = hq.splice(start, end);
                vkopt.audio.__load_queue = vkopt.audio.__load_queue.concat(to_load);
                vkopt.audio.load_audio_urls(); // запускаем процесс загрузки инфы об аудио из очереди
@@ -4284,6 +4284,7 @@ vkopt['messages'] = {
       return vk_lib.get_block_comments(function(){
          /*css:
          .vk_old_unread_msg .nim-dialog.nim-dialog_classic.nim-dialog_unread-out .nim-dialog--inner-text,
+         .vk_old_unread_msg .ui_scroll_container .nim-dialog.nim-dialog_unread-out .nim-dialog--text-preview,
          .vk_old_unread_msg .nim-dialog.nim-dialog_classic.nim-dialog_unread-out.nim-dialog_muted .nim-dialog--inner-text,
          .vk_old_unread_msg .nim-dialog:not(.nim-dialog_deleted).nim-dialog_unread,
          ._vk_old_unread_msg .nim-dialog.nim-dialog_unread-out,
