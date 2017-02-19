@@ -905,6 +905,34 @@ var vkMozExtension = {
 			var s = Inj.Parse(func);
 			s.code = s.code.replace(rep_str, inj_code); //split(rep_str).join(inj_code);
 			return Inj.Make(s, s.code, arguments);
+		},
+		Patch: function (func, cb_before, cb_after) {
+			var names = func.split('.');
+			func = names.pop();
+			var context = window;
+			for (var i = 0; i < names.length; i++) {
+				context = context[names[i]]
+			}
+			if (!context[func].vkopt) {
+				var temp = context[func];
+				context[func] = function () {
+					if (cb_before) {
+						var args = cb_before.apply(this, arguments);
+						if (args) arguments = args;
+					}
+					if (arguments.hasOwnProperty('vkoptReturn'))
+						return arguments.vkoptReturn;
+					var r = temp.apply(this, arguments);
+					if (cb_after) {
+						[].push.call(arguments, r);
+						var r1 = cb_after.apply(this, arguments);
+						if (typeof r1 !== 'undefined')
+							return r1
+					}
+					return r
+				};
+				context[func].vkopt = true
+			}
 		}
 	};
 
